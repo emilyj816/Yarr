@@ -1,8 +1,8 @@
 {
     "ctrlCfg" : {
-        "type": "emu",
+        "type": "emu_Rd53a",
         "cfg" : {
-            "type" : "fei4b",
+            "type" : "rd53a",
             "tx" : {
                 "id" : 1337,
                 "size" : 256
