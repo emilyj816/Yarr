@@ -71,7 +71,6 @@ int main(int argc, char *argv[]) {
     std::cout << "\033[1;31m#####################################\033[0m" << std::endl;
     std::cout << "\033[1;31m# Welcome to the YARR Scan Console! #\033[0m" << std::endl;
     std::cout << "\033[1;31m#####################################\033[0m" << std::endl;
-    std::cout << "\033[1;31m#####################################\033[0m" << std::endl;
 
     std::cout << "\033[1;-> Parsing command line parameters ..." << std::endl;
     
