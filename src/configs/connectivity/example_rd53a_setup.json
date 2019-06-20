@@ -12,7 +12,7 @@
             "config" : "configs/rd53a_test_1.json",
             "tx" : 1,
             "rx" : 1,
-            "enable" : 1,
+            "enable" : 0,
             "locked" : 0
         }
     ]
