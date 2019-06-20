@@ -71,6 +71,7 @@ int main(int argc, char *argv[]) {
     std::cout << "#####################################" << std::endl;
     std::cout << "# Welcome to the YARR Scan Console! #" << std::endl;
     std::cout << "#####################################" << std::endl;
+    std::cout << "#####################################" << std::endl;
 
     std::cout << "-> Parsing command line parameters ..." << std::endl;
     
