@@ -122,6 +122,7 @@ void Rd53aMaskLoop::execPart1() {
                         dynamic_cast<Rd53a*>(fe)->setEn(col, row, 1);
                         dynamic_cast<Rd53a*>(fe)->setInjEn(col, row, 1);
                         modPixels.push_back(std::make_pair(col, row));
+                        std::cout<<col<<std::endl;
                     } 		
                     if (m_maskType == CrossTalkMask  ){	      
                         //---------------------------------------------------------------------------------
