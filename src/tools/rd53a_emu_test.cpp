@@ -17,7 +17,7 @@ int main(void) {
     RingBuffer * rx = new RingBuffer(128);
     RingBuffer * tx = new RingBuffer(128);
 
-    std::string ctrlCfgPath = "configs/emuCfg.json";
+    std::string ctrlCfgPath = "configs/emuCfg_Rd53a.json";
     std::ifstream ctrlCfgFile(ctrlCfgPath);
     json ctrlCfg;
     ctrlCfg << ctrlCfgFile;
