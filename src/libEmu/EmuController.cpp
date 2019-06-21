@@ -34,6 +34,7 @@ void EmuController<Fei4, Fei4Emu>::loadConfig(json &j) {
 
   //TODO make nice
   std::cout << "-> Starting Emulator" << std::endl;
+  std::cout <<"help me!?"<<std::endl;
   std::string emuCfgFile = j["feCfg"];
   std::cout << emuCfgFile << std::endl;
   emu = new Fei4Emu(emuCfgFile, emuCfgFile, rx, tx);
