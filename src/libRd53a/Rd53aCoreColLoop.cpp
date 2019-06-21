@@ -143,7 +143,7 @@ void Rd53aCoreColLoop::loadConfig(json &j) {
     }
     // Fine delay scan check
     if (m_impl->nSteps != (m_impl->maxCore-m_impl->minCore) )
-	std::cout << "The number of steps " << m_impl->nSteps << " is diffenrent from " << m_impl->maxCore-m_impl->minCore << std::endl;
+	std::cout << "The number of steps " << m_impl->nSteps << " is different from " << m_impl->maxCore-m_impl->minCore << std::endl;
     else if ( m_delayArray.size() != m_impl->nSteps )
 	std::cout << "Fine delay array size is not matching the number of injected columns, only the first fine delay number will be used!!! " << std::endl;
 }
