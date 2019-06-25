@@ -81,6 +81,7 @@ void Rd53aTriggerLoop::setNoInject() {
     m_trigWord[14] = 0x69696969;
     m_trigWord[2] = 0x69696969;
     m_trigWord[1] = 0x69696969;
+    std::cout<<"no inject"<<std::endl; //print test
     //m_trigWord[0] = 0x5c5c0000 + (Rd53aCmd::encode5to8(0x8<<1)<<8) + (Rd53aCmd::encode5to8(m_pulseDuration<<1)); // global pulse for sync FE
 
 }
