@@ -416,7 +416,7 @@ void Rd53aEmu::doTrigger( Rd53aEmu* emu,  const uint8_t pattern, const uint8_t t
     emu->linAnalogHits    = 0;
     emu->syncAnalogHits   = 0;
     
-    std::cout<<emu->analogHits->numOfEntries()<<std::endl; //print test
+    std::cout<<emu->analogHits->numOfEntries()<<" ini"<< std::endl; //print test
 
     emu->outWords[tag] = std::array<uint32_t, 100*192> {{ 0 }};
     
@@ -494,7 +494,7 @@ void Rd53aEmu::doTrigger( Rd53aEmu* emu,  const uint8_t pattern, const uint8_t t
             // Increment the timing counter
             emu->calTiming++;
             emu->bcid++;
-            std::cout << emu->analogHits->numOfEntries() << std::endl; //print test
+            std::cout << emu->analogHits->numOfEntries() <<" after doTrigger"<< std::endl; //print test
 
         
         }
