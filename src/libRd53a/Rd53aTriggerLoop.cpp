@@ -73,6 +73,7 @@ void Rd53aTriggerLoop::setTrigDelay(uint32_t delay) {
 void Rd53aTriggerLoop::setEdgeMode(uint32_t duration) {
     // Assumes CAL command to be in index 14
     m_trigWord[14] = Rd53aCmd::genCal(8, 1, 0, 40, 0, 0); // Inject
+    std::cout<<Rd53aCmd::genCal(8, 1, 0, 40, 0, 0) << std::endl; //print test
 }
 
 void Rd53aTriggerLoop::setNoInject() {
