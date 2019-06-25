@@ -73,7 +73,7 @@ void Rd53aTriggerLoop::setTrigDelay(uint32_t delay) {
 void Rd53aTriggerLoop::setEdgeMode(uint32_t duration) {
     // Assumes CAL command to be in index 14
     m_trigWord[14] = Rd53aCmd::genCal(8, 1, 0, 40, 0, 0); // Inject
-    std::cout<<Rd53aCmd::genCal(8, 1, 0, 40, 0, 0) << std::endl; //print test
+    //std::cout<<Rd53aCmd::genCal(8, 1, 0, 40, 0, 0) << std::endl; //print test
 }
 
 void Rd53aTriggerLoop::setNoInject() {
@@ -81,7 +81,7 @@ void Rd53aTriggerLoop::setNoInject() {
     m_trigWord[14] = 0x69696969;
     m_trigWord[2] = 0x69696969;
     m_trigWord[1] = 0x69696969;
-    std::cout<<"no inject"<<std::endl; //print test
+    //std::cout<<"no inject"<<std::endl; //print test
     //m_trigWord[0] = 0x5c5c0000 + (Rd53aCmd::encode5to8(0x8<<1)<<8) + (Rd53aCmd::encode5to8(m_pulseDuration<<1)); // global pulse for sync FE
 
 }
