@@ -89,8 +89,6 @@ void Rd53aCoreColLoop::execPart1() {
     
     g_stat->set(this, m_impl->m_cur);
     //std::this_thread::sleep_for(std::chrono::milliseconds(20));
-
-std::cout<<"print"<<std::endl;
 }
 
 void Rd53aCoreColLoop::execPart2() {
