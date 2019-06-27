@@ -79,7 +79,7 @@ int main(int argc, char *argv[]) {
     fe.setChipId(0);
     for (unsigned col=0; col<Rd53a::n_Col; col++) {
         for(unsigned row=0; row<Rd53a::n_Row; row++) {
-            fe.setEn(col, row, 1); // Disable all to avoid noise //testing
+            fe.setEn(col, row, 0); // Disable all to avoid noise //testing
         }
     }
     std::cout << ">>> Configuring chip with default config ..." << std::endl;
