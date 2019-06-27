@@ -129,8 +129,6 @@ void Rd53aTriggerLoop::execPart1() {
     while(!g_tx->isCmdEmpty());
     std::this_thread::sleep_for(std::chrono::microseconds(10));
     g_tx->setTrigEnable(0x1);
-    std::cout<<"triggerloop"<<std::endl; //print test
-
 }
 
 void Rd53aTriggerLoop::execPart2() {
