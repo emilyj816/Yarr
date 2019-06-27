@@ -57,7 +57,7 @@ void decode(RawData *data) {
 }
 
 int main(int argc, char *argv[]) {
-
+    std::cout<<"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"<<std::endl;
     int specNum = 0;
     if (argc > 1)
         specNum = std::stoi(argv[1]);
