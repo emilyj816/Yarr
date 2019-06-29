@@ -564,21 +564,20 @@ void Rd53aEmu::triggerAsync0( const uint32_t tag) {
     //
     
     if( injectTiming != calTiming ) { 
-        std::cout<<"injectTiming!=calTiming"<<std::endl; //print test    
+        //std::cout<<"injectTiming!=calTiming"<<std::endl; //print test    
         return;
     }
-    else {
-        std::cout<<"injectTiming======calTiming"<<std::endl; //print test
-    }
+    //else {
+    //    std::cout<<"injectTiming======calTiming"<<std::endl; //print test
+    //}
 
-    std::cout<<"DO YOU PASS THIS???????"<<std::endl; //print test
     for( size_t coreCol = 0; coreCol < n_coreCols; ++coreCol ) {
 #if 0
     // put these checks into a function maybe
     // check pixels to see if the digital enable is set for "octo-columns" (columns of cores)
     if (             dc < 64  && !((m_feCfg->EnCoreColSync.read()  >> ((dc - 0)   / 4)) & 0x1)) return;
-    if (64  <= dc && dc < 128 && !((m_feCfg->EnCoreColLin1.read()  >> ((dc - 64)  / 4)) & 0x1)) {std::cout<<m_feCfg->(m_feCfg->EnCoreColLin1.read()  >> ((dc - 64)  / 4)) & 0x1)<<std::endl; return;} //print test, will probably not work
-    if (128 <= dc && dc < 132 && !((m_feCfg->EnCoreColLin2.read()  >> ((dc - 128) / 4)) & 0x1)) {std::cout<<m_feCfg->(m_feCfg->EnCoreColLin2.read()  >> ((dc - 128)  / 4)) & 0x1)<<std::endl; return;} //print test, will probably not work
+    if (64  <= dc && dc < 128 && !((m_feCfg->EnCoreColLin1.read()  >> ((dc - 64)  / 4)) & 0x1)) return;
+    if (128 <= dc && dc < 132 && !((m_feCfg->EnCoreColLin2.read()  >> ((dc - 128) / 4)) & 0x1)) return;
     if (132 <= dc && dc < 196 && !((m_feCfg->EnCoreColDiff1.read() >> ((dc - 132) / 4)) & 0x1)) return;
     if (196 <= dc && dc < 200 && !((m_feCfg->EnCoreColDiff2.read() >> ((dc - 196) / 4)) & 0x1)) return;
 #endif
@@ -617,7 +616,7 @@ void Rd53aEmu::triggerAsync0( const uint32_t tag) {
                 if( pixel.type() == typeid( PixelModel<Rd53aLinPixelModel> ) ) {
                 
                     calculateSignal< PixelModel<Rd53aLinPixelModel> >( pixel, coreCol, coreRow, icol, irow, tag );
-                    std::cout<<"calculateSignal"<<std::endl; //print test
+                    //std::cout<<"calculateSignal"<<std::endl; //print test
                 
                 } else if( pixel.type() == typeid( PixelModel<Rd53aDiffPixelModel> ) ) {
                 
