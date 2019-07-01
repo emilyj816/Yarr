@@ -35,6 +35,9 @@ Rd53aTriggerLoop::Rd53aTriggerLoop() : LoopActionBase() {
 
 void Rd53aTriggerLoop::setTrigDelay(uint32_t delay) {
     std::cout<<delay<<std::endl;
+    int offset = -8
+    delay += offset
+    std::cout<<delay<<std::endl;
     m_trigWord.fill(0x69696969);
     // Inject
     //m_trigWord[31] = 0x5a5a6969;
