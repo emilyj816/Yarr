@@ -153,7 +153,9 @@ void Rd53aTriggerLoop::end() {
 }
 
 void Rd53aTriggerLoop::writeConfig(json &config) {
+    std::cout<<"writeConfig before "<<config["count"]<<std::endl;
     config["count"] = m_trigCnt;
+    std::cout<<"writeConfig after "<<config["count"]<<std::endl;
     config["frequency"] = m_trigFreq;
     config["time"] = m_trigTime;
     config["delay"] = m_trigDelay;
@@ -165,6 +167,7 @@ void Rd53aTriggerLoop::writeConfig(json &config) {
 void Rd53aTriggerLoop::loadConfig(json &config) {
     if (!config["count"].empty())
         m_trigCnt = config["count"];
+    std::cout<<"loadConfig "<<m_trigCnt<<std::endl;
     if (!config["frequency"].empty())
         m_trigFreq = config["frequency"];
     if (!config["time"].empty())
