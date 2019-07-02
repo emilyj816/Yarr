@@ -36,7 +36,7 @@ Rd53aTriggerLoop::Rd53aTriggerLoop() : LoopActionBase() {
 void Rd53aTriggerLoop::setTrigDelay(uint32_t delay) {
     //int digitalOffset = 0;
     //int analogOffset = 0;
-    int offset = -1;
+    int offset = -2;
     delay += offset;
     m_trigWord.fill(0x69696969);
     // Inject
