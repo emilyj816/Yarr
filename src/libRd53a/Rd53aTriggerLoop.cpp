@@ -38,6 +38,7 @@ void Rd53aTriggerLoop::setTrigDelay(uint32_t delay) {
     //int analogOffset = 0;
     int offset = 0;
     delay += offset;
+    std::cout<<delay<<std::endl;
     m_trigWord.fill(0x69696969);
     // Inject
     //m_trigWord[31] = 0x5a5a6969;
