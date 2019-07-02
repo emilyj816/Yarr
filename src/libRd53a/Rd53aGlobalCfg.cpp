@@ -121,7 +121,7 @@ void Rd53aGlobalCfg::init() {
     // Injection
     //39
     InjAnaMode.init(39, &m_cfg[39], 5, 1, 0); regMap["InjAnaMode"] = &Rd53aGlobalCfg::InjAnaMode;
-    InjEnDig.init(39, &m_cfg[39], 4, 1, 0); regMap["InjEnDig"] = &Rd53aGlobalCfg::InjEnDig;
+    InjEnDig.init(39, &m_cfg[39], 4, 1, 1); regMap["InjEnDig"] = &Rd53aGlobalCfg::InjEnDig; //changed last parameter to 1?
     InjDelay.init(39, &m_cfg[39], 0, 4, 0); regMap["InjDelay"] = &Rd53aGlobalCfg::InjDelay;
     //41
     InjVcalHigh.init(41, &m_cfg[41], 0, 12, 1000); regMap["InjVcalHigh"] = &Rd53aGlobalCfg::InjVcalHigh;
