@@ -564,12 +564,12 @@ void Rd53aEmu::triggerAsync0( const uint32_t tag) {
     //
     
     if( injectTiming != calTiming ) { 
-        std::cout<<"injectTiming!=calTiming"<<std::endl; //print test    
+       // std::cout<<"injectTiming!=calTiming"<<std::endl; //print test    
         return;
     }
-    else {
-        std::cout<<"injectTiming======calTiming"<<std::endl; //print test
-    }
+    //else {
+    //    std::cout<<"injectTiming======calTiming"<<std::endl; //print test
+    //}
 
     for( size_t coreCol = 0; coreCol < n_coreCols; ++coreCol ) {
     //std::cout<<"dc: "<<dc<<std::endl; //print test
