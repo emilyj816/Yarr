@@ -575,6 +575,11 @@ void Rd53aEmu::triggerAsync0( const uint32_t tag) {
 #if 0
     // put these checks into a function maybe
     // check pixels to see if the digital enable is set for "octo-columns" (columns of cores)
+        
+    std::cout<<"dc: "<<dc<<std::endl; //print test
+    std::cout<<"EnCoreColLin1: "<<m_feCfg->EnCoreColLin1.read()<<std::endl; //print test
+    std::cout<<"EnCoreColLin2: "<<m_feCfg->EnCoreColLin2.read()<<std::endl; //print test
+   
     if (             dc < 64  && !((m_feCfg->EnCoreColSync.read()  >> ((dc - 0)   / 4)) & 0x1)) return;
     if (64  <= dc && dc < 128 && !((m_feCfg->EnCoreColLin1.read()  >> ((dc - 64)  / 4)) & 0x1)) return;
     if (128 <= dc && dc < 132 && !((m_feCfg->EnCoreColLin2.read()  >> ((dc - 128) / 4)) & 0x1)) return;
