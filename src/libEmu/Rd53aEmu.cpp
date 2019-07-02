@@ -342,6 +342,7 @@ void Rd53aEmu::doBCR( Rd53aEmu* emu ) {
 void Rd53aEmu::doNoop( Rd53aEmu* emu ) {
     emu->calTiming += 4;
     emu->bcid      += 4;
+    std::cout<<"after doNoop: "<<calTiming<<std::endl;
 }
 
 
@@ -494,7 +495,7 @@ void Rd53aEmu::doTrigger( Rd53aEmu* emu,  const uint8_t pattern, const uint8_t t
             // Increment the timing counter
             emu->calTiming++;
             emu->bcid++;
-            //std::cout << emu->analogHits->numOfEntries() <<" after doTrigger"<< std::endl; //print test
+            std::cout << emu->analogHits->numOfEntries() <<" number of entries after doTrigger"<< std::endl; //print test
 
         
         }
@@ -564,12 +565,12 @@ void Rd53aEmu::triggerAsync0( const uint32_t tag) {
     //
     
     if( injectTiming != calTiming ) { 
-        //std::cout<<"injectTiming!=calTiming"<<std::endl; //print test    
+        std::cout<<"injectTiming!=calTiming"<<std::endl; //print test    
         return;
     }
-    //else {
-    //    std::cout<<"injectTiming======calTiming"<<std::endl; //print test
-    //}
+    else {
+        std::cout<<"injectTiming======calTiming"<<std::endl; //print test
+    }
 
     for( size_t coreCol = 0; coreCol < n_coreCols; ++coreCol ) {
 #if 0
