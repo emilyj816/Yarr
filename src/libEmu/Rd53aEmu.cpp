@@ -554,7 +554,7 @@ void Rd53aEmu::triggerAsync0( const uint32_t tag) {
             return std::pair<unsigned, unsigned> { CalColPrDiff1 + (coreCol-33)/4, icol/2 + ((coreCol-33)%4)*n_corePixelCols/2 };
         }
     };
-    std::cout<<InjEnDig.value<<std::endl; //print test
+    std::cout<<m_feCfg->InjEnDig.read()<<std::endl; //print test
     
     
     /////////////////////////////////////////////////////////////////////////////////////////////////
