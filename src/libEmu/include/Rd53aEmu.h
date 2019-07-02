@@ -364,10 +364,29 @@ private:
         // Bit [3]   : TDAC sign   (only for Diff)
         // Bit [4-7] : TDAC b[0-3] (only for Diff)
                 
-        if( !( reg & 0x1 >>0 ) ) {std::cout<<"hmm"<<std::endl; return;}
-        if( !( reg & 0x2 >>1 ) ) {std::cout<<"hmm1"<<std::endl; return;}
+        if( !( reg & 0x1 >>0 ) ) {return;}
+        if( !( reg & 0x2 >>1 ) ) {return;}
 
         formatWords( coreCol, coreRow, subCol, subRow, calculateToT( analogFE ), tag );
+    }
+    
+    void calculateSignalDig( anytype& pixel, const uint32_t coreCol, const uint32_t coreRow, const uint32_t subCol, const uint32_t subRow, uint32_t tag ) {
+        
+        auto& model    = pixel.getVar<PIXEL>();
+        auto& reg      = model.m_register;
+        auto& analogFE = model.m_analogFEModel;
+
+        // See Manual Table 30 (p.72) for the behavior of the pixel register
+        // Bit [0]   : pixel power or enable
+        // Bit [1]   : injection enable
+        // Bit [2]   : Hitbus enable
+        // Bit [3]   : TDAC sign   (only for Diff)
+        // Bit [4-7] : TDAC b[0-3] (only for Diff)
+                
+        if( !( reg & 0x1 >>0 ) ) return;
+        if( !( reg & 0x2 >>1 ) ) return;
+
+        formatWords( coreCol, coreRow, subCol, subRow, 8, tag );
     }
 
 
