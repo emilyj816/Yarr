@@ -370,6 +370,7 @@ private:
         formatWords( coreCol, coreRow, subCol, subRow, calculateToT( analogFE ), tag );
     }
     
+    template<class PIXEL>
     void calculateSignalDig( anytype& pixel, const uint32_t coreCol, const uint32_t coreRow, const uint32_t subCol, const uint32_t subRow, uint32_t tag ) {
         
         auto& model    = pixel.getVar<PIXEL>();
