@@ -612,12 +612,16 @@ void Rd53aEmu::triggerAsync0( const uint32_t tag) {
             
                 auto& pixel = core[icol][irow];
                 
-                if(m_feCfg->InjEnDig.read() == 1){
+                //if(m_feCfg->InjEnDig.read() == 1){
                     
-                    formatWords( coreCol, coreRow, icol, irow, 8, tag );
-                    continue;
+                //    auto& reg      = model.m_register;
+                //    if( !( reg & 0x1 >>0 ) ) return;
+                //    if( !( reg & 0x2 >>1 ) ) return;
+                //    formatWords( coreCol, coreRow, icol, irow, 8, tag );
+                //    continue;
                     
-                } else if( pixel.type() == typeid( PixelModel<Rd53aLinPixelModel>) ) {
+            }
+                if( pixel.type() == typeid( PixelModel<Rd53aLinPixelModel>) ) {
                 
                     calculateSignal< PixelModel<Rd53aLinPixelModel> >( pixel, coreCol, coreRow, icol, irow, tag );
                 
