@@ -364,8 +364,8 @@ private:
         // Bit [3]   : TDAC sign   (only for Diff)
         // Bit [4-7] : TDAC b[0-3] (only for Diff)
                 
-        if( !( reg & 0x1 >>0 ) ) return;
-        if( !( reg & 0x2 >>1 ) ) return;
+        if( !( reg & 0x1 >>0 ) ) {std::cout<<"hmm"<<std::endl; return;}
+        if( !( reg & 0x2 >>1 ) ) {std::cout<<"hmm1"<<std::endl; return;}
 
         formatWords( coreCol, coreRow, subCol, subRow, calculateToT( analogFE ), tag );
     }
