@@ -375,7 +375,7 @@ private:
         
         auto& model    = pixel.getVar<PIXEL>();
         auto& reg      = model.m_register;
-        auto& analogFE = model.m_analogFEModel;
+        //auto& analogFE = model.m_analogFEModel;
 
         // See Manual Table 30 (p.72) for the behavior of the pixel register
         // Bit [0]   : pixel power or enable
