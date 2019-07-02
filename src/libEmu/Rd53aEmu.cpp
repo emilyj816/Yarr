@@ -553,9 +553,7 @@ void Rd53aEmu::triggerAsync0( const uint32_t tag) {
         } else {
             return std::pair<unsigned, unsigned> { CalColPrDiff1 + (coreCol-33)/4, icol/2 + ((coreCol-33)%4)*n_corePixelCols/2 };
         }
-    };
-    std::cout<<m_feCfg->InjEnDig.read()<<std::endl; //print test
-    
+    };    
     
     /////////////////////////////////////////////////////////////////////////////////////////////////
     //
@@ -613,14 +611,15 @@ void Rd53aEmu::triggerAsync0( const uint32_t tag) {
             for( size_t irow = 0; irow < n_corePixelRows; ++irow ) {
             
                 auto& pixel = core[icol][irow];
-            
-                if( pixel.type() == typeid( PixelModel<Rd53aLinPixelModel> && m_feCfg->InjEnDig.read() != 1) ) {
+                
+                if(m_feCfg->InjEnDig.read() == 1){
+                    
+                    uint8_t ToT = 8;
+                    continue;
+                    
+                } else if( (pixel.type() == typeid( PixelModel<Rd53aLinPixelModel>) ) {
                 
                     calculateSignal< PixelModel<Rd53aLinPixelModel> >( pixel, coreCol, coreRow, icol, irow, tag );
-                
-                } else if( pixel.type() == typeid( PixelModel<Rd53aLinPixelModel> && m_feCfg->InjEnDig.read() == 1) ) {
-                
-                    ToT = 8; 
                 
                 } else if( pixel.type() == typeid( PixelModel<Rd53aDiffPixelModel> ) ) {
                 
