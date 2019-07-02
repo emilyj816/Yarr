@@ -342,7 +342,7 @@ void Rd53aEmu::doBCR( Rd53aEmu* emu ) {
 void Rd53aEmu::doNoop( Rd53aEmu* emu ) {
     emu->calTiming += 4;
     emu->bcid      += 4;
-    std::cout<<"after doNoop: "<<calTiming<<std::endl;
+    std::cout<<"after doNoop: "<<emu->calTiming<<std::endl;
 }
 
 
