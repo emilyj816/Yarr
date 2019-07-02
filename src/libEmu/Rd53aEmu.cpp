@@ -342,7 +342,6 @@ void Rd53aEmu::doBCR( Rd53aEmu* emu ) {
 void Rd53aEmu::doNoop( Rd53aEmu* emu ) {
     emu->calTiming += 4;
     emu->bcid      += 4;
-    std::cout<<"after doNoop: "<<emu->calTiming<<std::endl;
 }
 
 
@@ -495,7 +494,7 @@ void Rd53aEmu::doTrigger( Rd53aEmu* emu,  const uint8_t pattern, const uint8_t t
             // Increment the timing counter
             emu->calTiming++;
             emu->bcid++;
-            std::cout << emu->analogHits->numOfEntries() <<" number of entries after doTrigger"<< std::endl; //print test
+            //std::cout << emu->analogHits->numOfEntries() <<" number of entries after doTrigger"<< std::endl; //print test
 
         
         }
@@ -573,14 +572,12 @@ void Rd53aEmu::triggerAsync0( const uint32_t tag) {
     }
 
     for( size_t coreCol = 0; coreCol < n_coreCols; ++coreCol ) {
-#if 0
-    // put these checks into a function maybe
-    // check pixels to see if the digital enable is set for "octo-columns" (columns of cores)
-        
     std::cout<<"dc: "<<dc<<std::endl; //print test
     std::cout<<"EnCoreColLin1: "<<m_feCfg->EnCoreColLin1.read()<<std::endl; //print test
     std::cout<<"EnCoreColLin2: "<<m_feCfg->EnCoreColLin2.read()<<std::endl; //print test
-   
+#if 0
+    // put these checks into a function maybe
+    // check pixels to see if the digital enable is set for "octo-columns" (columns of cores)
     if (             dc < 64  && !((m_feCfg->EnCoreColSync.read()  >> ((dc - 0)   / 4)) & 0x1)) return;
     if (64  <= dc && dc < 128 && !((m_feCfg->EnCoreColLin1.read()  >> ((dc - 64)  / 4)) & 0x1)) return;
     if (128 <= dc && dc < 132 && !((m_feCfg->EnCoreColLin2.read()  >> ((dc - 128) / 4)) & 0x1)) return;
