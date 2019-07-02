@@ -614,10 +614,10 @@ void Rd53aEmu::triggerAsync0( const uint32_t tag) {
                 
                 if(m_feCfg->InjEnDig.read() == 1){
                     
-                    uint8_t ToT = 8;
+                    formatWords( coreCol, coreRow, iCol, iRow, 8, tag );
                     continue;
                     
-                } else if( (pixel.type() == typeid( PixelModel<Rd53aLinPixelModel>) ) {
+                } else if( pixel.type() == typeid( PixelModel<Rd53aLinPixelModel>) ) {
                 
                     calculateSignal< PixelModel<Rd53aLinPixelModel> >( pixel, coreCol, coreRow, icol, irow, tag );
                 
