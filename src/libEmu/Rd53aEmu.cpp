@@ -572,17 +572,17 @@ void Rd53aEmu::triggerAsync0( const uint32_t tag) {
     }
 
     for( size_t coreCol = 0; coreCol < n_coreCols; ++coreCol ) {
-    std::cout<<"dc: "<<dc<<std::endl; //print test
-    std::cout<<"EnCoreColLin1: "<<m_feCfg->EnCoreColLin1.read()<<std::endl; //print test
-    std::cout<<"EnCoreColLin2: "<<m_feCfg->EnCoreColLin2.read()<<std::endl; //print test
+    //std::cout<<"dc: "<<dc<<std::endl; //print test
+    //std::cout<<"EnCoreColLin1: "<<m_feCfg->EnCoreColLin1.read()<<std::endl; //print test
+    //std::cout<<"EnCoreColLin2: "<<m_feCfg->EnCoreColLin2.read()<<std::endl; //print test
 #if 0
     // put these checks into a function maybe
     // check pixels to see if the digital enable is set for "octo-columns" (columns of cores)
-    if (             dc < 64  && !((m_feCfg->EnCoreColSync.read()  >> ((dc - 0)   / 4)) & 0x1)) return;
-    if (64  <= dc && dc < 128 && !((m_feCfg->EnCoreColLin1.read()  >> ((dc - 64)  / 4)) & 0x1)) return;
-    if (128 <= dc && dc < 132 && !((m_feCfg->EnCoreColLin2.read()  >> ((dc - 128) / 4)) & 0x1)) return;
-    if (132 <= dc && dc < 196 && !((m_feCfg->EnCoreColDiff1.read() >> ((dc - 132) / 4)) & 0x1)) return;
-    if (196 <= dc && dc < 200 && !((m_feCfg->EnCoreColDiff2.read() >> ((dc - 196) / 4)) & 0x1)) return;
+    if (             dc < 64  && !((m_feCfg->EnCoreColSync.read()  >> ((dc - 0)   / 4)) & 0x1)) {std::cout<<"1"<<std::endl; return;}
+    if (64  <= dc && dc < 128 && !((m_feCfg->EnCoreColLin1.read()  >> ((dc - 64)  / 4)) & 0x1)) {std::cout<<"2"<<std::endl; return;}
+    if (128 <= dc && dc < 132 && !((m_feCfg->EnCoreColLin2.read()  >> ((dc - 128) / 4)) & 0x1)) {std::cout<<"3"<<std::endl; return;}
+    if (132 <= dc && dc < 196 && !((m_feCfg->EnCoreColDiff1.read() >> ((dc - 132) / 4)) & 0x1)) {std::cout<<"4"<<std::endl; return;}
+    if (196 <= dc && dc < 200 && !((m_feCfg->EnCoreColDiff2.read() >> ((dc - 196) / 4)) & 0x1)) {std::cout<<"5"<<std::endl; return;}
 #endif
     
 #if 0
