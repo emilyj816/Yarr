@@ -563,12 +563,9 @@ void Rd53aEmu::triggerAsync0( const uint32_t tag) {
     //
     
     if( injectTiming != calTiming ) { 
-       // std::cout<<"injectTiming!=calTiming"<<std::endl; //print test    
         return;
     }
-    //else {
-    //    std::cout<<"injectTiming======calTiming"<<std::endl; //print test
-    //}
+
 
     for( size_t coreCol = 0; coreCol < n_coreCols; ++coreCol ) {
 #if 0
@@ -620,7 +617,7 @@ void Rd53aEmu::triggerAsync0( const uint32_t tag) {
                 //    formatWords( coreCol, coreRow, icol, irow, 8, tag );
                 //    continue;
                     
-            }
+            //}
                 if( pixel.type() == typeid( PixelModel<Rd53aLinPixelModel>) ) {
                 
                     calculateSignal< PixelModel<Rd53aLinPixelModel> >( pixel, coreCol, coreRow, icol, irow, tag );
