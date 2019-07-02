@@ -614,10 +614,13 @@ void Rd53aEmu::triggerAsync0( const uint32_t tag) {
             
                 auto& pixel = core[icol][irow];
             
-                if( pixel.type() == typeid( PixelModel<Rd53aLinPixelModel> ) ) {
+                if( pixel.type() == typeid( PixelModel<Rd53aLinPixelModel> && m_feCfg->InjEnDig.read() != 1) ) {
                 
                     calculateSignal< PixelModel<Rd53aLinPixelModel> >( pixel, coreCol, coreRow, icol, irow, tag );
-                    //std::cout<<"calculateSignal"<<std::endl; //print test
+                
+                } else if( pixel.type() == typeid( PixelModel<Rd53aLinPixelModel> && m_feCfg->InjEnDig.read() == 1) ) {
+                
+                    ToT = 8; 
                 
                 } else if( pixel.type() == typeid( PixelModel<Rd53aDiffPixelModel> ) ) {
                 
