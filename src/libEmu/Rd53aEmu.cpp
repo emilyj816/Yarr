@@ -609,9 +609,9 @@ void Rd53aEmu::triggerAsync0( const uint32_t tag) {
             
                 auto& pixel = core[icol][irow];
                 
-                if(m_feCfg->InjEnDig.read() == 1){
+                if((m_feCfg->InjEnDig.read() == 1) && (pixel.type() == typeid( PixelModel<Rd53aLinPixelModel>)) ){
                     
-                    calculateSignal< PixelModel<Rd53aLinPixelModel> >( pixel, coreCol, coreRow, icol, irow, tag ); //digital hardcoding ToT = 8
+                    calculateSignalDig< PixelModel<Rd53aLinPixelModel> >( pixel, coreCol, coreRow, icol, irow, tag ); //digital hardcoding ToT = 8
                     continue;
                     
                 } else if( pixel.type() == typeid( PixelModel<Rd53aLinPixelModel>) ) {
