@@ -609,7 +609,8 @@ void Rd53aEmu::triggerAsync0( const uint32_t tag) {
             
                 auto& pixel = core[icol][irow];
                 
-                if((m_feCfg->InjEnDig.read() == 1) && (pixel.type() == typeid( PixelModel<Rd53aLinPixelModel>)) ){
+                if((m_feCfg->InjEnDig.read() == 1) && (pixel.type() == typeid( PixelModel<Rd53aLinPixelModel>)) ){ 
+                    //if digital injection is enabled, we want to fix the ToT to 8, such that the triggering works out
                     
                     calculateSignalDig< PixelModel<Rd53aLinPixelModel> >( pixel, coreCol, coreRow, icol, irow, tag ); //digital hardcoding ToT = 8
                     continue;
