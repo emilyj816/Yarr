@@ -372,7 +372,7 @@ private:
     
     template<class PIXEL>
     void calculateSignalDig( anytype& pixel, const uint32_t coreCol, const uint32_t coreRow, const uint32_t subCol, const uint32_t subRow, uint32_t tag ) {
-        
+        //This function is called when digital injection is enabled, and simply forces ToT = 8
         auto& model    = pixel.getVar<PIXEL>();
         auto& reg      = model.m_register;
         //auto& analogFE = model.m_analogFEModel;
