@@ -55,11 +55,6 @@ bool toBoolArr(std::vector<bool> bin)
     if((bin.size()%2==1)&&bin[bin.size()-1]==0){//this is the special case where we're on the last digit but it's still odd and it's 0, so we gon add 1, hopefully this takes care of everything?
       bin.emplace_back(1);
     }
-    std::cout<<"break?"<<std::endl;
-    for(unsigned int i=0; i<bin.size(); i++){
-      std::cout<<bin[i];
-    }
-    std::cout<<" "<<std::endl;
 
     unsigned int numLevels = 4+1;
     int levelCounts[numLevels] = {0, 2, 0, 0, 0};
@@ -362,8 +357,10 @@ std::vector <bool> encode (){
 
 int main () {
 
-  std::vector<bool>bin = {1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,0,1,1,0,1,0,1,0,0};
-  std::vector<bool>twoBitArr_fake = encode();
-  bool twobitarr_fakest = toBoolArr(bin);
+  std::vector<bool>bin_fake = {1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,0,1,1,0,1,0,1,0,0};
+
+  
+  std::vector<bool>bin = encode();
+  bool twoBitArr = toBoolArr(bin);
   return 0;
 }
