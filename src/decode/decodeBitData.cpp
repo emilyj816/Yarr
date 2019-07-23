@@ -28,14 +28,21 @@ std::map<std::vector<bool>, std::vector<bool> > bin19;
 std::map<std::vector<bool>, std::vector<bool> > bin20;
 std::map<std::vector<bool>, std::vector<bool> > bin21;
 std::map<std::vector<bool>, std::vector<bool> > bin22;
-std::map<std::vector<bool>, std::vector<bool> > bin23;
-std::map<std::vector<bool>, std::vector<bool> > bin24;
-std::map<std::vector<bool>, std::vector<bool> > bin25;
-std::map<std::vector<bool>, std::vector<bool> > bin26;
-std::map<std::vector<bool>, std::vector<bool> > bin27;
-std::map<std::vector<bool>, std::vector<bool> > bin28;
-std::map<std::vector<bool>, std::vector<bool> > bin29;
-std::map<std::vector<bool>, std::vector<bool> > bin30;
+
+
+std::map<unsigned int, std::map<std::vector<bool>, std::vector<bool> > > bins = { {5, bin5},{6, bin6},{7, bin7},{8,bin8},{9,bin9},{10,bin10},{11,bin11},{12,bin12},{13,bin13},{14,bin14},{16,bin16},{17,bin17},{18,bin18},{19,bin19},{20,bin20},{21,bin21},{22,bin22}};//this is a map of all the binary strings, sorted by length
+
+std::map<std::vector<bool>, std::vector<unsigned int> > begin4;//key: the 4 digit long beginning, value: a vector containing the lengths of binary codes that have this
+std::map<std::vector<bool>, std::vector<unsigned int> > begin5;
+std::map<std::vector<bool>, std::vector<unsigned int> > begin6;
+std::map<std::vector<bool>, std::vector<unsigned int> > begin7;
+std::map<std::vector<bool>, std::vector<unsigned int> > begin8;
+std::map<std::vector<bool>, std::vector<unsigned int> > begin9;
+std::map<std::vector<bool>, std::vector<unsigned int> > begin10;
+
+std::map<unsigned int, std::map<std::vector<bool>, std::vector<unsigned int> > > begins={{5, begin5}, {6, begin6}, {7, begin7}, {8, begin8}, {9, begin9}, {10, begin10}};
+
+std::map<std::vector<bool>, std::vector<std::vector<bool> > > end4; //maps vector of binaries(even) and vector of decoded map(odd) to its 4 digit beginning
 
 bool flag=0;
 
@@ -44,16 +51,32 @@ bool decode(std::vector<bool> bin)
   unsigned int rows = 2;
   unsigned int cols = 8;
   bool twoBitArr[16]={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+  //std::vector<bool>twoBitArr={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
   bool flag = 0;
   unsigned int nextLevel = 2;
   std::vector<bool> bin4 = {0,0,0,0};
-  if(std::equal(bin.begin(), bin.begin()+3, bin4.begin())){
-    twoBitArr[15]=1;
+  if(bin==bin4){
     return twoBitArr;
   }
   else{
+    std::vector<bool>beginning(bin.begin(),bin.begin()+4);
+    
+    if(end4.find(beginning)!=end4.end()){//find the corresponding beginning 4 digits
+      
+      for(unsigned int i=0; i<end4[beginning].size()/2; i++){//find the map
+	std::vector<bool>temp(bin.begin()+4, bin.begin()+end4[beginning][2*i].size()+4);//we compare only the non beginning part to save space
+
+	if(temp==end4[beginning][2*i]){//does it belong in this?
+
+	  std::copy(end4[beginning][2*i+1].begin(), end4[beginning][2*i+1].end(), twoBitArr); //convert to array
+	  return twoBitArr;
+
+	}
+      }
+    }
+    
     //search binary length 5
-    std::map<std::vector<bool>, std::vector<bool> >::iterator it5;
+    /*std::map<std::vector<bool>, std::vector<bool> >::iterator it5;
     std::map<std::vector<bool>, std::vector<bool> >::iterator it6;
     std::map<std::vector<bool>, std::vector<bool> >::iterator it7;
 
@@ -64,52 +87,20 @@ bool decode(std::vector<bool> bin)
 	std::copy(it5->second.begin(), it5->second.end(), twoBitArr); 
 	return twoBitArr;	
       }
-    }
-
-    for(it6=bin6.begin(); it6!=bin6.end(); it6++){
-      if(std::equal(bin.begin(), bin.begin()+5, it6->first.begin())){
-	std::copy(it6->second.begin(), it6->second.end(), twoBitArr); 
-	return twoBitArr;	
-      }
-    }
-
-    for(it7=bin7.begin(); it7!=bin7.end(); it7++){
-      if(std::equal(bin.begin(), bin.begin()+6, it7->first.begin())){
-	std::copy(it7->second.begin(), it7->second.end(), twoBitArr); 
-	return twoBitArr;	
-      }
-    }
+      }*/
     
-  /*else if(bin.size()==5){
-    //std::map<std::string, int>::iterator it = mapOfWordCount.begin();
-    std::copy(bin5.find(bin)->second.begin(), bin5.find(bin)->second.end(), twoBitArr);
-    return twoBitArr;
-  }
-  else if(bin.size()==6){
-    std::copy(bin6.find(bin)->second.begin(), bin6.find(bin)->second.end(), twoBitArr);
-    return twoBitArr;
-  }
-  else if(bin.size()==7){
-    std::copy(bin7.find(bin)->second.begin(), bin7.find(bin)->second.end(), twoBitArr);
-    return twoBitArr;
-  }
-  else if(bin.size()==8){
-    std::copy(bin8.find(bin)->second.begin(), bin8.find(bin)->second.end(), twoBitArr);
-    return twoBitArr;
-    }*/
   /*else if(bin.size()==9){
     std::copy(bin9.find(bin)->second.begin(), bin9.find(bin)->second.end(), twoBitArr);
     return twoBitArr;
     }*/
 
     //expand from Huffman coding back from 0->01
-    for (unsigned int i=0; i<bin.size(); i++){
+    for (unsigned int i=0; i<bin.size(); i++){//oh no! i used bin size here. need to find a way to add later
       if(flag){
 	flag = 0;
 	continue;
       }
       else if(bin[i]){
-
 	flag=1;
       }
       else{
@@ -122,8 +113,10 @@ bool decode(std::vector<bool> bin)
 
     //count number of binary digits corresponding to each level
     unsigned int numLevels = 4;
-    int levelCounts[numLevels] = {2, 0, 0, 0};
-    unsigned int nextLevel = levelCounts[0];
+    unsigned int levelCounts[numLevels] = {2, 0, 0, 0};
+    unsigned int levelCountsSum[numLevels] = {2, 0, 0, 0};
+    unsigned int nextLevelSum = 2;
+    unsigned int binSize = 2;
 
     for (unsigned int i = 0; i<(numLevels-1); i++){
       //loop through levelCounts, fill with next level before going to next one
@@ -133,7 +126,7 @@ bool decode(std::vector<bool> bin)
 	dum+=levelCounts[k];
       }
 
-      nextLevel = 0;
+      unsigned int nextLevel = 0;
 
       for (unsigned int j = 0; j<levelCounts[i]; j++){
 	//loop through the individual binary digits in each level to compute how many will be in the next level
@@ -143,40 +136,44 @@ bool decode(std::vector<bool> bin)
 	}
       }
       levelCounts[i+1] = nextLevel;
+      binSize+=nextLevel;
+      nextLevelSum+=nextLevel;
+      levelCountsSum[i+1]=nextLevelSum;
     }
 
-    unsigned int binSize = levelCounts[0]+levelCounts[1]+levelCounts[2]+levelCounts[3];
-
+    //let's try the lookup by binSize here
+    /*if(binSize<16){
+      
+      }*/
+    
     //get coordinates of the two bits    
     for(unsigned int i=0; i<levelCounts[numLevels-1]/2; i++){ //loop through 2bits
-      unsigned int x=0;
-      unsigned int y=0;
+      unsigned int x=0; //this records the position on the map
       unsigned int temp=i; //use this to track which pair on the level we're currently analyzing so we can get the one above, we're resetting it here to be the bottom bit pair, but as we move through the next for loop we want to update it to always be the order of the pair that was just put into the coords 	
       
       for(unsigned int j=0; j<(numLevels-1); j++){//loop through levels
 	//keeps track of which pixel we're on, decrement every time we fill coords
 	unsigned int counter=0; 
 	unsigned int levelTracker=numLevels-2-j;
-	unsigned int binCoord=binSize-levelCounts[numLevels-1]-levelCounts[numLevels-2]; 
-	unsigned int binCoordBase=binCoord;
+	int binCoord = -1;
+	if(j<(numLevels-2)){
+	  binCoord = levelCountsSum[1-j]-1;
+	}
+	
 	bool flag=0;
 
-	for (unsigned int k=0; k<j; k++){
-	  binCoordBase = binCoordBase-levelCounts[numLevels-3-k];
-	}
-
 	for (unsigned int k=0; k<levelCounts[numLevels-2-j]; k++){
-	  binCoord = binCoordBase+k;
+	  binCoord++;
 	  
 	  if(bin[binCoord]==1){
 	    if(counter==temp){//this means it's the pair we're looking for!
 	      temp=floor(k/2);  //we update temp to mean the pair we just found
 	      if(binCoord%2==1){
 		if(levelTracker==0){
-		  x=x+2;
+		  x=x+4;
 		}
 		else if(levelTracker==1){
-		  x=x+4;
+		  x=x+2;
 		}
 		else{
 		  x=x+1;
@@ -191,25 +188,11 @@ bool decode(std::vector<bool> bin)
       twoBitArr[2*x]=bin[bin.size()-levelCounts[numLevels-1]+2*i]; //fill with twoBits
       twoBitArr[2*x+1]=bin[bin.size()-levelCounts[numLevels-1]+2*i+1];
     }
-
-    //fix this later, it's very slow but it's a temprorary fix while we get other stuff working, this makes it so it's in the order that we divide in
-    bool temp4 = twoBitArr[4];
-    bool temp5 = twoBitArr[5];
-    bool temp6 = twoBitArr[6];
-    bool temp7 = twoBitArr[7];
-    twoBitArr[4]=twoBitArr[8];
-    twoBitArr[5]=twoBitArr[9];
-    twoBitArr[6]=twoBitArr[10];
-    twoBitArr[7]=twoBitArr[11];
-    twoBitArr[8]=temp4;
-    twoBitArr[9]=temp5;
-    twoBitArr[10]=temp6;
-    twoBitArr[11]=temp7;
     
-    /*for (unsigned int x=0; x<16; x++){
-	std::cout<<twoBitArr[x]<<" ";
-      }
-      std::cout<<" "<<std::endl;*/
+    for (unsigned int x=0; x<16; x++){
+      std::cout<<twoBitArr[x]<<" ";
+    }
+    std::cout<<" "<<std::endl;
   }
   return twoBitArr;
 }
@@ -431,123 +414,53 @@ int main () {
   std::vector<std::vector<bool> > permsEncoded;
   perms.reserve(permNum);
   permsEncoded.reserve(permNum);
+  
 
-  for(int i=0; i<permNum; i++){
+  for(int i=0; i<permNum; i++){//make map of all possible hit maps with their binary codes
     int temp=i;
     for(int j=0; j<16; j++){
       perms[i].push_back(temp%2);
       //std::cout<<temp%2;
       temp=temp/2;
-    }
-    //std::cout<<""<<std::endl;
-
+    }  
     permsEncoded[i]=encode(perms[i]);
-    if(permsEncoded[i].size()==5){
+  
+    for(int j=5; j<8; j++){//loop through length of binary string that we're going to find length of beginnings for
+      if(permsEncoded[i].size()==j){
+	bins[j][permsEncoded[i] ]=perms[i];
+	for(unsigned int k=4; k<j; k++){//k: length of beginnings
+	  std::vector<bool>temp(permsEncoded[i].begin(),permsEncoded[i].begin()+k);
+	  if(k==4){//fill the 4 binary vector
+	    std::vector<bool>permEncoded (permsEncoded[i].begin()+4, permsEncoded[i].end());
+	    end4[temp].push_back(permEncoded);
+	    end4[temp].push_back(perms[i]);
+	  }
+	  //fill all the beginnings of different lengths
+	  /*if(std::find(begins[k][temp].begin(), begins[k][temp].end(),k)==begins[k][temp].end()){//if the beginning is not already there
+	    begins[k][temp].push_back(j);
+	    std::cout<<j<<": ";
+	    std::cout<<temp.size()<<std::endl;
+	    std::cout<<"k: "<<k<<std::endl;
+	    for(std::vector<bool>::const_iterator l = temp.begin(); l!=temp.end(); ++l){ 
+	      std::cout<<*l;
+	    }//l
+	    std::cout<<" "<<std::endl;
+	    }//if*/
+	}//k
+      }//if
+    }//j
+  }//i
+  
+    /*if(permsEncoded[i].size()==5){
       bin5[permsEncoded[i]]=perms[i];
-    }
-    else if(permsEncoded[i].size()==6){
-      bin6[permsEncoded[i]]=perms[i];
-    }
-    else if(permsEncoded[i].size()==7){
-      bin7[permsEncoded[i]]=perms[i];
-    }
-    else if(permsEncoded[i].size()==8){
-      bin8[permsEncoded[i]]=perms[i];
-    }
-    else if(permsEncoded[i].size()==9){
-      bin9[permsEncoded[i]]=perms[i];
-    }
-    else if(permsEncoded[i].size()==10){
-      bin10[permsEncoded[i]]=perms[i];
-    }
-    else if(permsEncoded[i].size()==11){
-      bin11[permsEncoded[i]]=perms[i];
-    }
-    else if(permsEncoded[i].size()==12){
-      bin12[permsEncoded[i]]=perms[i];
-    }
-    else if(permsEncoded[i].size()==13){
-      bin13[permsEncoded[i]]=perms[i];
-    }
-    else if(permsEncoded[i].size()==14){
-      bin14[permsEncoded[i]]=perms[i];
-    }
-    else if(permsEncoded[i].size()==15){
-      bin15[permsEncoded[i]]=perms[i];
-    }
-    else if(permsEncoded[i].size()==16){
-      bin16[permsEncoded[i]]=perms[i];
-    }
-    else if(permsEncoded[i].size()==17){
-      bin17[permsEncoded[i]]=perms[i];
-    }
-    else if(permsEncoded[i].size()==18){
-      bin18[permsEncoded[i]]=perms[i];
-    }
-    else if(permsEncoded[i].size()==19){
-      bin19[permsEncoded[i]]=perms[i];
-    }
-    else if(permsEncoded[i].size()==20){
-      bin20[permsEncoded[i]]=perms[i];
-    }
-    else if(permsEncoded[i].size()==21){
-      bin21[permsEncoded[i]]=perms[i];
-    }
-    else if(permsEncoded[i].size()==22){
-      bin22[permsEncoded[i]]=perms[i];
-    }
-    else if(permsEncoded[i].size()==23){
-      bin23[permsEncoded[i]]=perms[i];
-    }
-    else if(permsEncoded[i].size()==24){
-      bin24[permsEncoded[i]]=perms[i];
-    }
-    else if(permsEncoded[i].size()==25){
-      bin25[permsEncoded[i]]=perms[i];
-    }
-    else if(permsEncoded[i].size()==26){
-      bin26[permsEncoded[i]]=perms[i];
-    }
-    else if(permsEncoded[i].size()==27){
-      bin27[permsEncoded[i]]=perms[i];
-    }
-    else if(permsEncoded[i].size()==28){
-      bin28[permsEncoded[i]]=perms[i];
-    }
-    else if(permsEncoded[i].size()==29){
-      bin29[permsEncoded[i]]=perms[i];
-    }
-    else if(permsEncoded[i].size()==30){
-      bin30[permsEncoded[i]]=perms[i];
+      begin4[std::vector(perms[i].begin(), perms[i].begin()+3)].push_back(5);
+      
     }
     //std::cout<<""<<std::endl;
   }
-  std::cout<<bin5.size()<<std::endl;
-  std::cout<<bin6.size()<<std::endl;
-  std::cout<<bin7.size()<<std::endl;
-  std::cout<<bin8.size()<<std::endl;
-  std::cout<<bin9.size()<<std::endl;
-  std::cout<<bin10.size()<<std::endl;
-  std::cout<<bin11.size()<<std::endl;
-  std::cout<<bin12.size()<<std::endl;
-  std::cout<<bin13.size()<<std::endl;
-  std::cout<<bin14.size()<<std::endl;
-  std::cout<<bin15.size()<<std::endl;
-  std::cout<<bin16.size()<<std::endl;
-  std::cout<<bin17.size()<<std::endl;
-  std::cout<<bin18.size()<<std::endl;
-  std::cout<<bin19.size()<<std::endl;
-  std::cout<<bin20.size()<<std::endl;
-  std::cout<<bin21.size()<<std::endl;
-  std::cout<<bin22.size()<<std::endl;
-  std::cout<<bin23.size()<<std::endl;
-  std::cout<<bin24.size()<<std::endl;
-  std::cout<<bin25.size()<<std::endl;
-  std::cout<<bin26.size()<<std::endl;
-  std::cout<<bin27.size()<<std::endl;
-  std::cout<<bin28.size()<<std::endl;
-  std::cout<<bin29.size()<<std::endl;
-  std::cout<<bin30.size()<<std::endl;
+  /*std::cout<<bins[5].size()<<std::endl;
+    std::cout<<bins[6].size()<<std::endl;*/
+
 
   std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();
 
@@ -556,9 +469,7 @@ int main () {
   std::mt19937 rng(dev());
   std::uniform_int_distribution<std::mt19937::result_type> dist6(0,1);
   
-
-  
-  for(unsigned int i=0; i<10000; i++){
+  //for(unsigned int i=0; i<10000; i++){
     std::vector<bool> rando={0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0};
     flag = 0;
     for (unsigned int x=0; x<16; x++){
@@ -567,12 +478,13 @@ int main () {
 	flag=1;
 	rando[x] = 1;
       }
-      //std::cout<<rando[x];
+      std::cout<<rando[x]<<" ";
     }
-    //std::cout<<" "<<std::endl;
+
+    std::cout<<" "<<std::endl;
     std::vector<bool>bin = encode(rando);
     bool twoBitArr = decode(bin);
-  }
+    //}
 
   std::chrono::high_resolution_clock::time_point t2 = std::chrono::high_resolution_clock::now();
   auto duration = std::chrono::duration_cast<std::chrono::microseconds> (t2 - t1).count();
