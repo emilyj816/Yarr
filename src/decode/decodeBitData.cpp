@@ -95,7 +95,8 @@ bool decode(std::vector<bool> bin)
     }*/
 
     //expand from Huffman coding back from 0->01
-    for (unsigned int i=0; i<bin.size(); i++){//oh no! i used bin size here. need to find a way to add later
+    /*for (unsigned int i=0; i<bin.size(); i++){//oh no! i used bin size here. need to find a way to add later
+      //flag: previously 1
       if(flag){
 	flag = 0;
 	continue;
@@ -109,7 +110,7 @@ bool decode(std::vector<bool> bin)
 	bin.insert(it, 1+1);
 	flag=1;
       }
-    }
+    }*/
 
     //count number of binary digits corresponding to each level
     unsigned int numLevels = 4;
@@ -131,9 +132,25 @@ bool decode(std::vector<bool> bin)
       for (unsigned int j = 0; j<levelCounts[i]; j++){
 	//loop through the individual binary digits in each level to compute how many will be in the next level
 
-	if (bin[dum+j]){ //every true on one level will spawn 2 more spots on the next level	
+	/*if (bin[dum+j]){ //every true on one level will spawn 2 more spots on the next level	
 	  nextLevel += 2;
+	  }*/
+	if(flag){
+	  flag=0;
+	  continue;
 	}
+
+	else if(bin[dum+j]){
+	  nextLevel+=2;
+	  flag=1;
+	}
+	else{
+	  std::vector<bool>::iterator it = bin.begin();
+	  std::advance(it, i+1);
+	  bin.insert(it, 1+1);
+	  nextLevel+=2;
+	  flag=1;
+	}	
       }
       levelCounts[i+1] = nextLevel;
       binSize+=nextLevel;
