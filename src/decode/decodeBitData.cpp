@@ -446,7 +446,6 @@ int main () {
     for(unsigned int j=0; j<16; j++){
 
       perms[i].push_back(temp%2);
-      table<<temp%2;
       flag+=(temp%2);
       temp=temp/2;
     }
