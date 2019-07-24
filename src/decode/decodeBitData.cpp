@@ -442,9 +442,7 @@ int main () {
   for(unsigned int i=0; i<permNum; i++){//make map of all possible hit maps with their binary codes
     //int flag =0;
     int temp=i;
-    table<<i<<"\t";
     for(unsigned int j=0; j<16; j++){
-
       perms[i].push_back(temp%2);
       flag+=(temp%2);
       temp=temp/2;
