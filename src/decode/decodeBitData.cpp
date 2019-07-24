@@ -9,6 +9,7 @@
 #include <algorithm>
 #include <map>
 #include <random>
+#include <fstream>
 
 std::map<std::vector<bool>, std::vector<bool> > bin5;
 std::map<std::vector<bool>, std::vector<bool> > bin6;
@@ -39,8 +40,18 @@ std::map<std::vector<bool>, std::vector<unsigned int> > begin7;
 std::map<std::vector<bool>, std::vector<unsigned int> > begin8;
 std::map<std::vector<bool>, std::vector<unsigned int> > begin9;
 std::map<std::vector<bool>, std::vector<unsigned int> > begin10;
+std::map<std::vector<bool>, std::vector<unsigned int> > begin11;
+std::map<std::vector<bool>, std::vector<unsigned int> > begin12;
+std::map<std::vector<bool>, std::vector<unsigned int> > begin13;
+std::map<std::vector<bool>, std::vector<unsigned int> > begin14;
+std::map<std::vector<bool>, std::vector<unsigned int> > begin15;
+std::map<std::vector<bool>, std::vector<unsigned int> > begin16;
+std::map<std::vector<bool>, std::vector<unsigned int> > begin17;
+std::map<std::vector<bool>, std::vector<unsigned int> > begin18;
+std::map<std::vector<bool>, std::vector<unsigned int> > begin19;
+std::map<std::vector<bool>, std::vector<unsigned int> > begin20;
 
-std::map<unsigned int, std::map<std::vector<bool>, std::vector<unsigned int> > > begins={{5, begin5}, {6, begin6}, {7, begin7}, {8, begin8}, {9, begin9}, {10, begin10}};
+std::map<unsigned int, std::map<std::vector<bool>, std::vector<unsigned int> > > begins={{5, begin5}, {6, begin6}, {7, begin7}, {8, begin8}, {9, begin9}, {10, begin10},{11, begin11},{12, begin12},{13, begin13},{14, begin14},{15, begin15},{16, begin16},{17, begin17},{18, begin18},{19, begin18},{20, begin20}};
 
 std::map<std::vector<bool>, std::vector<std::vector<bool> > > end4; //maps vector of binaries(even) and vector of decoded map(odd) to its 4 digit beginning
 
@@ -51,7 +62,6 @@ bool decode(std::vector<bool> bin)
   unsigned int rows = 2;
   unsigned int cols = 8;
   bool twoBitArr[16]={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
-  //std::vector<bool>twoBitArr={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
   bool flag = 0;
   unsigned int nextLevel = 2;
   std::vector<bool> bin4 = {0,0,0,0};
@@ -59,7 +69,34 @@ bool decode(std::vector<bool> bin)
     return twoBitArr;
   }
   else{
-    std::vector<bool>beginning(bin.begin(),bin.begin()+4);
+    std::vector<bool>binBegin(bin.begin(),bin.begin()+5);
+    if(bins[5].find(binBegin)!=bins[5].end()){//found matching 5 digit long one, nothing to do now but return
+      //std::cout<<5<<std::endl;
+      std::copy(binBegin.begin(), binBegin.end(), twoBitArr); //convert to array
+      return twoBitArr;
+      }
+
+    else {//second level
+      if(begins[5].find(binBegin)!=begins[5].end()){//look for beginning like the first 5 digits of our binary string
+	unsigned int next = *std::min_element(begins[5][binBegin].begin(), begins[5][binBegin].end());//size of next to be tried element
+	for(int i=5; i<next; i++){//update binBegin to be new length
+	  binBegin.push_back(bin[i]);
+	}
+	if(bins[next].find(binBegin)!=bins[next].end()){//look for the new beginning as a full bin
+	  //std::cout<<"next"<<std::endl;
+	  std::copy(binBegin.begin(), binBegin.end(), twoBitArr); //convert to array
+	  return twoBitArr;
+	}
+	/*else{//third level, stop here?
+	  if(begins[next].find(binBegin)!=begins[5].end()){
+	  }
+	  }*/
+      }
+      }
+    
+    
+
+    /*std::vector<bool>beginning(bin.begin(),bin.begin()+4);
     
     if(end4.find(beginning)!=end4.end()){//find the corresponding beginning 4 digits
       
@@ -73,91 +110,58 @@ bool decode(std::vector<bool> bin)
 
 	}
       }
-    }
-    
-    //search binary length 5
-    /*std::map<std::vector<bool>, std::vector<bool> >::iterator it5;
-    std::map<std::vector<bool>, std::vector<bool> >::iterator it6;
-    std::map<std::vector<bool>, std::vector<bool> >::iterator it7;
-
-
-    for(it5=bin5.begin(); it5!=bin5.end(); it5++){
-      if(std::equal(bin.begin(), bin.begin()+4, it5->first.begin())){
-	std::cout<<"help"<<std::endl;
-	std::copy(it5->second.begin(), it5->second.end(), twoBitArr); 
-	return twoBitArr;	
-      }
-      }*/
-    
-  /*else if(bin.size()==9){
-    std::copy(bin9.find(bin)->second.begin(), bin9.find(bin)->second.end(), twoBitArr);
-    return twoBitArr;
     }*/
-
-    //expand from Huffman coding back from 0->01
-    /*for (unsigned int i=0; i<bin.size(); i++){//oh no! i used bin size here. need to find a way to add later
-      //flag: previously 1
-      if(flag){
-	flag = 0;
-	continue;
-      }
-      else if(bin[i]){
-	flag=1;
-      }
-      else{
-	std::vector<bool>::iterator it = bin.begin();
-	std::advance(it, i+1);
-	bin.insert(it, 1+1);
-	flag=1;
-      }
-    }*/
-
+    
     //count number of binary digits corresponding to each level
+	    
     unsigned int numLevels = 4;
     unsigned int levelCounts[numLevels] = {2, 0, 0, 0};
     unsigned int levelCountsSum[numLevels] = {2, 0, 0, 0};
     unsigned int nextLevelSum = 2;
     unsigned int binSize = 2;
+    unsigned int binSizeEncoded = 2; 
 
-    for (unsigned int i = 0; i<(numLevels-1); i++){
+    for (unsigned int i = 0; i<numLevels; i++){
       //loop through levelCounts, fill with next level before going to next one
       unsigned int dum = 0;
 
-      for (unsigned int k = 0; k<i; k++){//just get the place of current place in bin before looping through this level
-	dum+=levelCounts[k];
+      for (unsigned int j = 0; j<i; j++){//just get the place of current place in bin before looping through this level
+	dum+=levelCounts[j];
       }
 
+      for(unsigned int j=0; j<levelCounts[i]; j++){//huffman decode the coming level
+	if(flag){//previously 1, this one 
+	  flag = 0;
+	  continue;
+	}
+	else if(bin[dum+j]){//this one is 1, flag it
+	  flag=1;
+	}
+	else{//need to insert 1
+	  std::vector<bool>::iterator it = bin.begin();
+	  std::advance(it, dum+j+1);
+	  bin.insert(it, 1);
+	  flag=1;
+	  binSizeEncoded--;
+	}
+      }
+      
       unsigned int nextLevel = 0;
-
+      
       for (unsigned int j = 0; j<levelCounts[i]; j++){
 	//loop through the individual binary digits in each level to compute how many will be in the next level
 
-	/*if (bin[dum+j]){ //every true on one level will spawn 2 more spots on the next level	
+	if (bin[dum+j]){ //every true on one level will spawn 2 more spots on the next level	
 	  nextLevel += 2;
-	  }*/
-	if(flag){
-	  flag=0;
-	  continue;
-	}
-
-	else if(bin[dum+j]){
-	  nextLevel+=2;
-	  flag=1;
-	}
-	else{
-	  std::vector<bool>::iterator it = bin.begin();
-	  std::advance(it, i+1);
-	  bin.insert(it, 1+1);
-	  nextLevel+=2;
-	  flag=1;
 	}	
       }
       levelCounts[i+1] = nextLevel;
       binSize+=nextLevel;
+      binSizeEncoded+=nextLevel;
       nextLevelSum+=nextLevel;
       levelCountsSum[i+1]=nextLevelSum;
     }
-
+    
     //let's try the lookup by binSize here
     /*if(binSize<16){
       
@@ -206,10 +210,10 @@ bool decode(std::vector<bool> bin)
       twoBitArr[2*x+1]=bin[bin.size()-levelCounts[numLevels-1]+2*i+1];
     }
     
-    for (unsigned int x=0; x<16; x++){
+    /*for (unsigned int x=0; x<16; x++){
       std::cout<<twoBitArr[x]<<" ";
     }
-    std::cout<<" "<<std::endl;
+    std::cout<<" "<<std::endl;*/
   }
   return twoBitArr;
 }
@@ -431,52 +435,28 @@ int main () {
   std::vector<std::vector<bool> > permsEncoded;
   perms.reserve(permNum);
   permsEncoded.reserve(permNum);
-  
+  std::ofstream table;
+  table.open("table.txt");
+  table<<"int \t binary \n";
 
-  for(int i=0; i<permNum; i++){//make map of all possible hit maps with their binary codes
+  for(unsigned int i=0; i<permNum; i++){//make map of all possible hit maps with their binary codes
+    //int flag =0;
     int temp=i;
-    for(int j=0; j<16; j++){
+    table<<i<<"\t";
+    for(unsigned int j=0; j<16; j++){
+
       perms[i].push_back(temp%2);
-      //std::cout<<temp%2;
+      table<<temp%2;
+      //flag+=(temp%2);
       temp=temp/2;
-    }  
+    }      
+    table<<"\n";
+    //std::cout<<i<<std::endl;
     permsEncoded[i]=encode(perms[i]);
-  
-    for(int j=5; j<8; j++){//loop through length of binary string that we're going to find length of beginnings for
-      if(permsEncoded[i].size()==j){
-	bins[j][permsEncoded[i] ]=perms[i];
-	for(unsigned int k=4; k<j; k++){//k: length of beginnings
-	  std::vector<bool>temp(permsEncoded[i].begin(),permsEncoded[i].begin()+k);
-	  if(k==4){//fill the 4 binary vector
-	    std::vector<bool>permEncoded (permsEncoded[i].begin()+4, permsEncoded[i].end());
-	    end4[temp].push_back(permEncoded);
-	    end4[temp].push_back(perms[i]);
-	  }
-	  //fill all the beginnings of different lengths
-	  /*if(std::find(begins[k][temp].begin(), begins[k][temp].end(),k)==begins[k][temp].end()){//if the beginning is not already there
-	    begins[k][temp].push_back(j);
-	    std::cout<<j<<": ";
-	    std::cout<<temp.size()<<std::endl;
-	    std::cout<<"k: "<<k<<std::endl;
-	    for(std::vector<bool>::const_iterator l = temp.begin(); l!=temp.end(); ++l){ 
-	      std::cout<<*l;
-	    }//l
-	    std::cout<<" "<<std::endl;
-	    }//if*/
-	}//k
-      }//if
-    }//j
+
   }//i
-  
-    /*if(permsEncoded[i].size()==5){
-      bin5[permsEncoded[i]]=perms[i];
-      begin4[std::vector(perms[i].begin(), perms[i].begin()+3)].push_back(5);
-      
-    }
-    //std::cout<<""<<std::endl;
-  }
-  /*std::cout<<bins[5].size()<<std::endl;
-    std::cout<<bins[6].size()<<std::endl;*/
+
+  //table.close();
 
 
   std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();
@@ -486,7 +466,7 @@ int main () {
   std::mt19937 rng(dev());
   std::uniform_int_distribution<std::mt19937::result_type> dist6(0,1);
   
-  //for(unsigned int i=0; i<10000; i++){
+  for(unsigned int i=0; i<10000; i++){
     std::vector<bool> rando={0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0};
     flag = 0;
     for (unsigned int x=0; x<16; x++){
@@ -495,13 +475,13 @@ int main () {
 	flag=1;
 	rando[x] = 1;
       }
-      std::cout<<rando[x]<<" ";
+      //std::cout<<rando[x]<<" ";
     }
 
-    std::cout<<" "<<std::endl;
+    //std::cout<<" "<<std::endl;
     std::vector<bool>bin = encode(rando);
     bool twoBitArr = decode(bin);
-    //}
+  }
 
   std::chrono::high_resolution_clock::time_point t2 = std::chrono::high_resolution_clock::now();
   auto duration = std::chrono::duration_cast<std::chrono::microseconds> (t2 - t1).count();
@@ -510,3 +490,48 @@ int main () {
   return 0;
 
 }
+    /*bins[permsEncoded[i].size()][permsEncoded[i] ]=perms[i];//map of maps of hit maps, hit map key is encoded hit map, encoded hit map key is length of encoded hit map
+
+    if(permsEncoded[i].size()<15&&permsEncoded[i].size()>4){//we only want to record in our lookup table binary strings that are this small, maybe remove, not sure if encoding by string length is a good idea
+
+      //do the multiple sized beginnings lookup table
+      for(int beginSize=5; beginSize<permsEncoded[i].size(); beginSize++){
+	std::vector<bool>beginning (permsEncoded[i].begin(), permsEncoded[i].begin()+beginSize);
+	begins[beginSize][beginning].push_back(permsEncoded[i].size());
+      }
+
+      //do beginning length 4 encodings, actually this is really slow...
+      //std::cout<<permsEncoded[i].size()<<std::endl;
+      std::vector<bool>permEncoded (permsEncoded[i].begin(), permsEncoded[i].end());
+      std::vector<bool>begin(permsEncoded[i].begin(),permsEncoded[i].begin()+4);//beginning
+      
+      end4[begin].push_back(permEncoded);//end of encoded permutation
+      end4[begin].push_back(perms[i]);//decoded hit map
+
+      
+    }
+
+
+
+
+
+  
+    /*for(int j=5; j<8; j++){//loop through length of binary string that we're going to find length of beginnings for
+      if(permsEncoded[i].size()==j){
+	bins[j][permsEncoded[i] ]=perms[i];
+	for(unsigned int k=4; k<j; k++){//k: length of beginnings
+	  std::vector<bool>temp(permsEncoded[i].begin(),permsEncoded[i].begin()+k);
+	  //fill all the beginnings of different lengths
+	  if(std::find(begins[k][temp].begin(), begins[k][temp].end(),k)==begins[k][temp].end()){//if the beginning is not already there
+	    begins[k][temp].push_back(j);
+	    std::cout<<j<<": ";
+	    std::cout<<temp.size()<<std::endl;
+	    std::cout<<"k: "<<k<<std::endl;
+	    for(std::vector<bool>::const_iterator l = temp.begin(); l!=temp.end(); ++l){ 
+	      std::cout<<*l;
+	    }//l
+	    std::cout<<" "<<std::endl;
+	  }//if
+	}//k
+      }//if
+    }//j*/
