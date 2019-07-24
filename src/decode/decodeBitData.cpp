@@ -447,16 +447,20 @@ int main () {
 
       perms[i].push_back(temp%2);
       table<<temp%2;
-      //flag+=(temp%2);
+      flag+=(temp%2);
       temp=temp/2;
-    }      
-    table<<"\n";
-    //std::cout<<i<<std::endl;
-    permsEncoded[i]=encode(perms[i]);
+    }
+    if(flag<4){
+      permsEncoded[i]=encode(perms[i]);
+      table<<i<<"\t";
+      for(std::vector<bool>::const_iterator j = permsEncoded[i].begin(); j!=permsEncoded[i].end(); ++j){ 
+	table<<*j;
+      }
+      table<<"\n";
+    }
+  }
 
-  }//i
-
-  //table.close();
+  table.close();
 
 
   std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();
