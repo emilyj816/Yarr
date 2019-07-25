@@ -441,12 +441,19 @@ int main () {
   perms.reserve(permNum);
   permsEncoded.reserve(permNum);
 
+  //for file storage purposes
   std::ofstream table;
   table.open("table.txt");
   table<<"int \t binary \n";
 
+  //this will be our final table
   std::vector<std::vector<std::string> > sortedTable;
-  sortedTable.reserve(2);
+  sortedTable.reserve(3);
+
+  //declare map for later convenience in sorting
+  std::map<std::string, std::vector<int> > sortingAid;
+  std::vector<std::string> helper;
+
   //std::string sortedTable[2][698];
   for(unsigned int i=0; i<permNum; i++){//make map of all possible hit maps with their binary codes
     int flag =0;
@@ -457,42 +464,53 @@ int main () {
       temp=temp/2;
     }
     if(flag<4 && encode(perms[i]).size()<10){//we only want binary strings that are 9 or less
+      std::cout<<encode(perms[i]).size();
       permsEncoded[i]=encode(perms[i]);
 
       //make into strings
       std::ostringstream oss;
       std::copy(permsEncoded[i].begin(), permsEncoded[i].end(), std::ostream_iterator<int>(oss));
-      sortedTable[0].push_back(std::to_string(i));
-      sortedTable[1].push_back(oss.str());
-      //sortedTable[0][flag2]=std::to_string(i);
-      //sortedTable[1][flag2]=oss.str();
 
-      //print table contents
-      /*table<<i<<"\t";
-      for(std::vector<bool>::const_iterator j = permsEncoded[i].begin(); j!=permsEncoded[i].end(); ++j){ 
-	table<<*j;
+      //fill beginning with 0s appropriately
+      int size = oss.str().size();
+      std::string str = oss.str();
+      for (int j=0; j<(9-size); j++){
+	str="0"+str;
       }
-      table<<"\n";*/
+
+      helper.push_back(str);
+      sortingAid[str].push_back(i);
+      sortingAid[str].push_back(permsEncoded[i].size());
     }
   }
 
   //sort table
   //first, fill beginning with 0s
-  for(int i=0; i<sortedTable.size(); i++){
-    for (int j=0; j<sortedTable[1].size(); j++){
-      sortedTable[1][i]="0"+sortedTable[1][i];
+  /*for(int i=0; i<helper.size(); i++){
+    int size = helper[i].size();
+    for (int j=0; j<(9-size); j++){
+      helper[i]="0"+helper[i];
     }
+    }*/
+
+  std::sort(helper.begin(), helper.end());
+  sortedTable[1]=helper;
+
+  //remove extraneous 0s
+  for(int i=0; i<helper.size(); i++){
+    sortedTable[1][i]=sortedTable[1][i].substr(9-sortingAid[helper[i]][1], sortedTable[1][i].size()-1);
+
+    sortedTable[0].push_back(std::to_string(sortingAid[helper[i] ][0]));
+    std::cout<<sortedTable[1][i]<<std::endl;
   }
 
-  std::vector<std::string> help = sortedTable[1];
-  std::sort(help.begin(), help.end());
-  std::cout<<help.size()<<std::endl;
+
+  //std::cout<<help.size()<<std::endl;
 
   //put into table file
-  for(int i=0; i<help.size(); i++){
-    std::cout<<"help"<<std::endl;
-    //table<<sortedTable[i]<<"\t";
-    table<<help[i]<<"\n";
+  for(int i=0; i<sortedTable[0].size(); i++){
+    table<<sortedTable[0][i]<<"\t";
+    table<<sortedTable[1][i]<<"\n";
   }
 
   table.close();
