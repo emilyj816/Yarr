@@ -10,6 +10,10 @@
 #include <map>
 #include <random>
 #include <fstream>
+#include <string>
+#include <sstream>
+#include <iostream>
+#include <iterator>
 
 std::map<std::vector<bool>, std::vector<bool> > bin5;
 std::map<std::vector<bool>, std::vector<bool> > bin6;
@@ -438,23 +442,39 @@ int main () {
   std::ofstream table;
   table.open("table.txt");
   table<<"int \t binary \n";
-
+  std::string sortedTable[2][698];
+  int flag2=0;
   for(unsigned int i=0; i<permNum; i++){//make map of all possible hit maps with their binary codes
     int flag =0;
     int temp=i;
     for(unsigned int j=0; j<16; j++){
       perms[i].push_back(temp%2);
-      flag+=(temp%2);
+      flag+=(temp%2);//limits to 3 hits or less
       temp=temp/2;
     }
     if(flag<4){
+      flag2++;//tells where we are in the array
       permsEncoded[i]=encode(perms[i]);
-      table<<i<<"\t";
+
+      //make into strings
+      std::ostringstream oss;
+      std::copy(permsEncoded[i].begin(), permsEncoded[i].end(), std::ostream_iterator<int>(oss));
+      sortedTable[0][flag2]=std::to_string(i);
+      sortedTable[1][flag2]=oss.str();
+
+      //print table contents
+      /*table<<i<<"\t";
       for(std::vector<bool>::const_iterator j = permsEncoded[i].begin(); j!=permsEncoded[i].end(); ++j){ 
 	table<<*j;
       }
-      table<<"\n";
+      table<<"\n";*/
     }
+  }
+
+  //put table into file
+  for(int i=0; i<697; i++){
+    table<<sortedTable[0][i]<<"\t";
+    table<<sortedTable[1][i]<<"\n";
   }
 
   table.close();
