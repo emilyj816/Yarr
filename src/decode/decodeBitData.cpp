@@ -456,7 +456,7 @@ int main () {
       flag+=(temp%2);//limits to 3 hits or less
       temp=temp/2;
     }
-    if(flag<4){
+    if(flag<4 && encode(perms[i]).size()<10){//we only want binary strings that are 9 or less
       permsEncoded[i]=encode(perms[i]);
 
       //make into strings
@@ -477,6 +477,13 @@ int main () {
   }
 
   //sort table
+  //first, fill beginning with 0s
+  for(int i=0; i<sortedTable.size(); i++){
+    for (int j=0; j<sortedTable[1].size(); j++){
+      sortedTable[1][i]="0"+sortedTable[1][i];
+    }
+  }
+
   std::vector<std::string> help = sortedTable[1];
   std::sort(help.begin(), help.end());
   std::cout<<help.size()<<std::endl;
