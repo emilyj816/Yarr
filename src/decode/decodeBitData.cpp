@@ -477,13 +477,14 @@ int main () {
   }
 
   //sort table
-  std::sort(sortedTable[1].begin(), sortedTable[1].end());
-  std::cout<<sortedTable.size()<<std::endl;
+  std::vector<std::string> help = sortedTable[1];
+  std::sort(help.begin(), help.end());
+  std::cout<<help.size()<<std::endl;
 
-  //put table into file
+  //put into table file
   for(int i=0; i<sortedTable.size(); i++){
-    table<<sortedTable[0][i]<<"\t";
-    table<<sortedTable[1][i]<<"\n";
+    //table<<sortedTable[i]<<"\t";
+    table<<help[i]<<"\n";
   }
 
   table.close();
