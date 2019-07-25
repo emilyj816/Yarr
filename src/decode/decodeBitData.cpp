@@ -435,15 +435,19 @@ std::vector <bool> encode (std::vector<bool>twoBitArr0){
 int main () {
   //make lookup table
   int permNum = std::pow(2.0, 16.0);
+
   std::vector<std::vector<bool> > perms;
   std::vector<std::vector<bool> > permsEncoded;
   perms.reserve(permNum);
   permsEncoded.reserve(permNum);
+
   std::ofstream table;
   table.open("table.txt");
   table<<"int \t binary \n";
-  std::string sortedTable[2][698];
-  int flag2=0;
+
+  std::vector<std::vector<std::string> > sortedTable;
+  sortedTable.reserve(2);
+  //std::string sortedTable[2][698];
   for(unsigned int i=0; i<permNum; i++){//make map of all possible hit maps with their binary codes
     int flag =0;
     int temp=i;
@@ -453,14 +457,15 @@ int main () {
       temp=temp/2;
     }
     if(flag<4){
-      flag2++;//tells where we are in the array
       permsEncoded[i]=encode(perms[i]);
 
       //make into strings
       std::ostringstream oss;
       std::copy(permsEncoded[i].begin(), permsEncoded[i].end(), std::ostream_iterator<int>(oss));
-      sortedTable[0][flag2]=std::to_string(i);
-      sortedTable[1][flag2]=oss.str();
+      sortedTable[0].push_back(std::to_string(i));
+      sortedTable[1].push_back(oss.str());
+      //sortedTable[0][flag2]=std::to_string(i);
+      //sortedTable[1][flag2]=oss.str();
 
       //print table contents
       /*table<<i<<"\t";
@@ -471,8 +476,12 @@ int main () {
     }
   }
 
+  //sort table
+  std::sort(sortedTable[1].begin(), sortedTable[1].end());
+
+
   //put table into file
-  for(int i=0; i<697; i++){
+  for(int i=0; i<sortedTable.size(); i++){
     table<<sortedTable[0][i]<<"\t";
     table<<sortedTable[1][i]<<"\n";
   }
