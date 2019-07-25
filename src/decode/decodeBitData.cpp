@@ -482,7 +482,8 @@ int main () {
   std::cout<<help.size()<<std::endl;
 
   //put into table file
-  for(int i=0; i<sortedTable.size(); i++){
+  for(int i=0; i<help.size(); i++){
+    std::cout<<"help"<<std::endl;
     //table<<sortedTable[i]<<"\t";
     table<<help[i]<<"\n";
   }
