@@ -478,7 +478,7 @@ int main () {
 
   //sort table
   std::sort(sortedTable[1].begin(), sortedTable[1].end());
-
+  std::cout<<sortedTable.size()<<std::endl;
 
   //put table into file
   for(int i=0; i<sortedTable.size(); i++){
