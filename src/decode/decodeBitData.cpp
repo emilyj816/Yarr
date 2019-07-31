@@ -15,51 +15,38 @@
 #include <iostream>
 #include <iterator>
 
-bool flag=0;
+//bool flag=0;
+//int counter =0;
 
-bool decode(std::vector<bool> bin, std::vector<int>sortedTableFinal)
+bool decode(std::vector<bool> bin, std::vector<std::vector<bool> >sortedTableFinal, int toDec)
 {
 
-  unsigned int rows = 2;
-  unsigned int cols = 8;
-  bool twoBitArr[16]={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+  bool twoBitArr[16] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
   bool flag = 0;
   unsigned int nextLevel = 2;
   unsigned int sizeLimit = 8;
-  std::vector<bool> lookingUp(bin.begin(), bin.begin()+sizeLimit);
-  //convert to int
-  unsigned int toDec = 0;
-  for (int i=0; i<lookingUp.size(); i++){
-    if(lookingUp[i]){
-      toDec+=pow(2.0, sizeLimit-1-i);
-    }
-  } 
   
   //look it up
-  if(sortedTableFinal[toDec]!=0){
-    //convert dec to binary
-    int temp=sortedTableFinal[toDec];
-    for(unsigned int i=0; i<16; i++){
-      twoBitArr[i]=temp%2;
-      temp=temp/2;
-    }
-    //std::cout<<"hmm"<<std::endl;
+  if(sortedTableFinal[toDec].size()!=1){
+  //if(0){
+    std::copy(sortedTableFinal[toDec].begin(), sortedTableFinal[toDec].end(), twoBitArr); //convert to array
+
     return twoBitArr;
     }
   
   //count number of binary digits corresponding to each level	    
   unsigned int numLevels = 4;
   unsigned int levelCounts[numLevels] = {2, 0, 0, 0};
-  unsigned int levelCountsSum[numLevels] = {2, 0, 0, 0};
+  unsigned int levelCountsSum[numLevels] = {2, 0, 0, 0};//has number in the level, plus all the levels below
   unsigned int nextLevelSum = 2;
   unsigned int binSize = 2;
-  unsigned int binSizeEncoded = 2; 
 
   for (unsigned int i = 0; i<numLevels; i++){
     //loop through levelCounts, fill with next level before going to next one
     unsigned int dum = 0;
 
-    for (unsigned int j = 0; j<i; j++){//just get the place of current place in bin before looping through this level
+    for (unsigned int j = 0; j<i; j++){
+      //just get the place of current place in bin before looping through this level
       dum+=levelCounts[j];
     }
 
@@ -76,11 +63,8 @@ bool decode(std::vector<bool> bin, std::vector<int>sortedTableFinal)
 	std::advance(it, dum+j+1);
 	bin.insert(it, 1);
 	flag=1;
-	binSizeEncoded--;
       }
     }
-    //std::cout<<binSize<<std::endl;
-    //std::cout<<bin.size()<<std::endl;
       
     unsigned int nextLevel = 0;
       
@@ -93,14 +77,11 @@ bool decode(std::vector<bool> bin, std::vector<int>sortedTableFinal)
     }
     levelCounts[i+1] = nextLevel;
     binSize+=nextLevel;
-    //std::cout<<binSize<<"first"<<std::endl;
-    binSizeEncoded+=nextLevel;
     nextLevelSum+=nextLevel;
     levelCountsSum[i+1]=nextLevelSum;
   }
 
   binSize-=levelCounts[4];
-  //std::cout<<binSize<<"second"<<std::endl;
     
   //get coordinates of the two bits    
   for(unsigned int i=0; i<levelCounts[numLevels-1]/2; i++){ //loop through 2bits
@@ -119,7 +100,7 @@ bool decode(std::vector<bool> bin, std::vector<int>sortedTableFinal)
       bool flag=0;
 
       for (unsigned int k=0; k<levelCounts[numLevels-2-j]; k++){
-	binCoord++;
+	binCoord++;//go through the level
 	  
 	if(bin[binCoord]==1){
 	  if(counter==temp){//this means it's the pair we're looking for!
@@ -141,9 +122,8 @@ bool decode(std::vector<bool> bin, std::vector<int>sortedTableFinal)
 	}
       }	
     }
-    //std::cout<<bin.size()<<std::endl;
-    //std::cout<<binSize<<std::endl;
-    twoBitArr[2*x]=bin[binSize-levelCounts[numLevels-1]+2*i]; //fill with twoBits
+    //fill with twoBits
+    twoBitArr[2*x]=bin[binSize-levelCounts[numLevels-1]+2*i]; 
     twoBitArr[2*x+1]=bin[binSize-levelCounts[numLevels-1]+2*i+1];
   }
     
@@ -581,6 +561,22 @@ std::vector<bool> addRandomToT(std::vector<bool>bin, int sizeLimit) {
   return bin;
 }
 
+int binToDec (std::vector<bool> bin){
+  //convert to int
+  unsigned int toDec = 0;
+  for (int i=0; i<bin.size(); i++){
+    if(bin[i]){
+      toDec+=pow(2.0, bin.size()-1-i);
+    }
+  } 
+  return toDec;
+}
+
+std::vector<bool> decToBin (int dec, int binSize){
+  
+
+}
+
 
 
 int main () {
@@ -599,12 +595,12 @@ int main () {
   table.open("table.txt");
   table<<"int \t binary \n";
 
-  //this will be our final table
-  std::vector<std::vector<std::string> > sortedTable;
+  //this will be a preliminary table
+  std::vector<std::string > sortedTable;
   sortedTable.reserve(3);
 
   //declare map for later convenience in sorting
-  std::map<std::string, int > sortingAid;//matches sorted binaries to their int
+  std::map<std::string, std::vector<bool> > sortingAid;//matches sorted binaries to their int
   std::vector<std::vector<std::string> > helper;//row: length of binary string, sorted in order of largeness. col: sorted "alphabetically"
   helper.reserve(sizeLimit+1);
 
@@ -641,7 +637,7 @@ int main () {
 	  tempToT=tempToT/2;
 	}
 	helper[size].push_back(strToT);
-	sortingAid[strToT] = i;
+	sortingAid[strToT] = perms[i];
       }      
     }
   }
@@ -652,77 +648,99 @@ int main () {
     std::sort(helper[i].begin(), helper[i].end());
     help.insert(help.end(), helper[i].begin(), helper[i].end());
   }
-  sortedTable[1]=help;
-
-  
-  for (int i=0; i<sortedTable[1].size(); i++){//add the ints
-    sortedTable[0].push_back(std::to_string(sortingAid[sortedTable[1][i] ]));
-  }
+  sortedTable=help;
   
   //give int to encoded binary+ToT value
-  std::vector<int> sortedTableFinal(256);//maybe array?
-
-  for (int i=0; i<sortedTable[0].size(); i++){
-    //std::cout<<i<<std::endl;
-    //std::cout<<sortedTable[1][i]<<std::endl;
+  std::vector<std::vector <bool> > sortedTableFinal(256);//maybe array?
+  std::vector<bool> zero {0};
+  fill(sortedTableFinal.begin(), sortedTableFinal.end(), zero);
+  
+  for (int i=0; i<sortedTable.size(); i++){
     int toDec = 0;
     for(int j=0; j<sizeLimit; j++){
-      int dig = static_cast<int>(sortedTable[1][i].at(j));
-      //std::cout<<dig<<std::endl;
+      int dig = static_cast<int>(sortedTable[i].at(j));
       dig-=48;
       if(dig==1){
 	toDec+=pow(2.0, sizeLimit-1-j);
       }
     }
-    
-    sortedTableFinal[toDec]=sortingAid[sortedTable[1][i] ];
+    sortedTableFinal[toDec]=sortingAid[sortedTable[i] ];
   }
 
   //put into table file
   int num = pow(2.0, sizeLimit);
   for(int i=0; i<num; i++){
-    table<<i<<"\t"<<sortedTableFinal[i]<<"\n";
-    std::cout<<i<<"\t"<<sortedTableFinal[i]<<"\n";
-  }  
+    table<<i<<"\t";
+    //std::cout<<i<<"\t";
+
+    for(std::vector<bool>::const_iterator j = sortedTableFinal[i].begin(); j!=sortedTableFinal[i].end(); ++j){ 
+      table<<*j<<"\n";
+      //std::cout<<*j;
+    }
+
+    //std::cout<<" "<<std::endl;
+    }  
 
   table.close();
 
 
+
   std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();
 
-  srand (time(NULL));
   std::random_device dev;
   std::mt19937 rng(dev());
-  std::uniform_int_distribution<std::mt19937::result_type> dist6(0,1);
-  
-  for(unsigned int i=0; i<10000; i++){
-    std::vector<bool> rando={0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0};
-    flag = 0;
+  int oneHundredPercent = 100;
+  std::uniform_int_distribution<std::mt19937::result_type> dist6(0, oneHundredPercent-1);
+  srand (time(0));
+
+  //generate clumps
+  double hitProb = 0.1;
+  double twoClumpProb = 0;
+
+  for(unsigned int i=0; i<500000; i++){
+    std::vector<bool> rando = {0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0};
+    int flag = 0;
     for (unsigned int x=0; x<16; x++){
-      bool help = dist6(rng);
-      if(help){
-	flag=1;
+      if(dist6(rng)<oneHundredPercent*hitProb){//probability of a hit, now we see what kind of cluster it is
+	flag = 1;
 	rando[x] = 1;
+	if(dist6(rng)<twoClumpProb*oneHundredPercent){//two hits
+	  if(x==3){
+	    rando[8] = 1;
+	  }
+	  else if(x==7){
+	    rando[12] = 1;
+
+	  }
+	  else{ 
+	    if(x!=11 && x!=15){
+	      rando[x+1] = 1;
+	    }
+	  }
+	}
       }
       //std::cout<<rando[x]<<" ";
     }
     //std::cout<<"\n";
-  
 
-    //std::vector<bool>ran = {1,0,0,0,1,0,1,1,0,0,0,0,1,0,1,1};
+    if(!flag){
+      i--; //can't have empty one
+      continue;
+    }
+
     std::vector<bool>bin = encode(rando);
-    //std::cout<<bin.size()<<"yah"<<std::endl;
-    bin = addRandomToT(bin, sizeLimit);
+    std::vector<bool> lookingUp(bin.begin(), bin.begin()+sizeLimit);
 
-    bool twoBitArr = decode(bin, sortedTableFinal);
-
+    //convert to int
+    int toDec = binToDec(lookingUp);    
+    bool twoBitArr = decode(bin, sortedTableFinal, toDec);
+    
   }
-
+  
   std::chrono::high_resolution_clock::time_point t2 = std::chrono::high_resolution_clock::now();
   auto duration = std::chrono::duration_cast<std::chrono::microseconds> (t2 - t1).count();
   std::cout<<duration<<std::endl;
   
-
   return 0;
 
 }
