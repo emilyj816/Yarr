@@ -674,9 +674,10 @@ int main () {
     //std::cout<<i<<"\t";
 
     for(std::vector<bool>::const_iterator j = sortedTableFinal[i].begin(); j!=sortedTableFinal[i].end(); ++j){ 
-      table<<*j<<"\n";
+      table<<*j;
       //std::cout<<*j;
     }
+    table<<"\n";
 
     //std::cout<<" "<<std::endl;
     }  
